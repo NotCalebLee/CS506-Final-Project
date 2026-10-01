@@ -1,5 +1,7 @@
 # CS506-Final-Project
 
+Project Members: Caleb Lee, Emir Kavukcu, Travis Meyer, Toriana Mullins, Ziad Alharbi
+
 We are following the Spark! project "Boston Bus Equity." Boston's public transport, particularly the MBTA, is a core piece of the Massachusetts bay area. It serves over 1 million people a day and has an estimated economic value of 11.5 billion per year, meaning the quality of service directly impacts people's quality of life. The goal of this project is to us MBTA bus data to understand service performance trends by geography.
 
 Main goal:
