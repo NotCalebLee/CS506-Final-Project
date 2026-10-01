@@ -11,9 +11,9 @@ Specific goals:
   - Average delay and travel-time variation for trips
 - Measure performance of buses by geographical location
   - Identify areas with consistently abnormal service
-  - Test whether bus performance is tied with neighborhood characteristics such as median household income, ethnic background, etc..
+  - Test whether bus performance is tied with neighborhood characteristics such as median household income, ethnic background, etc.
 - Build a model to accurately predict delays on specific routes during specific days, times, and seasons
-- To quantify the impact that poor service quality has on riders
+- To quantify the impact that poor service quality has on riders (hours lost or a similar metric)
 
 What data needs to be collected?: 
 A lot of the data we will be using is accessible through the MBTA (accessible with ArcGIS). This data includes a system wide passenger survey, bus ridership data (broken up my routes, stops, and seasons), and reliability data shows with bus arrival and departure times.
