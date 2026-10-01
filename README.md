@@ -19,7 +19,15 @@ Specific goals:
 
 What data needs to be collected?
 
-A lot of the data we will be using is accessible through the MBTA (accessible with ArcGIS). This data includes a system wide passenger survey, bus ridership data (broken up my routes, stops, and seasons), and reliability data shows with bus arrival and departure times.
+A lot of the data we will be using is accessible through the MBTA (accessible with ArcGIS). This data includes a system wide passenger survey, bus ridership data (broken up my routes, stops, and seasons), and reliability data shows with bus arrival and departure times. Data on people, specifically geographic information, will be taken from census surveys, and surveys within Massachusetts such as MassDOT.
+
+Project Timeline:
+- Week of October 11th: Start looking into data sources and collecting what is relevant and applicable. 
+- Week of October 18th: Begin cleaning data and finding trends tying metrics together.
+- Week of October 25th and November 1st: Work on data visualization of statistically significant relationships. (This is given two weeks as we accept the possibility that finding significant relationships can be challenging)
+- Week of November 8th: Finalize the primary data work, and fix any gaps in the project. We will also start the process of model training. (This week is intended to serve as a small buffer if the previous timeline drags; this also allows us to realign ourselves if the project has changed since it's conception).
+- Week of November 15th and 22nd: Primarily work on model training.
+- Week of November 29th: Work to make the project feel complete and thorough. Find any gaps or supplementary work that can further our goals. Additionally, as this is a Spark! project, we have the added responsibility of demo day at the end of the semester. We will prepare anything we feel in necessary for that side of our project.
 
 How will we model data? (optional): 
 - insert_here
