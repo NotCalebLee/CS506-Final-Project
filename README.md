@@ -10,10 +10,10 @@ What data needs to be collected?:
 - Includes passanger survey data, ridership, arrival and depature times
 
 How will we model data? (optional): 
-- 
+- insert_here
 
 How will we visualize the data? (optional):
-- 
+- insert_here
 
 what is our test plan? (optional):
-- 
+- insert_here
