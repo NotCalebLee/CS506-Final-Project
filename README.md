@@ -22,13 +22,8 @@ What data needs to be collected?
 A lot of the data we will be using is accessible through the MBTA (accessible with ArcGIS). This data includes a system wide passenger survey, bus ridership data (broken up by routes, stops, and seasons), and reliability data shows with bus arrival and departure times. Data on people, specifically geographic information, will be taken from census surveys, and surveys within Massachusetts such as MassDOT. We will use GeoPandas to join the stop coordinates to census tracts. We will then merge the census data through those same tracts, which will allow us to look at routes in relation to the people who are most affected by any quality disparities. 
 
 2015-2017 Passenger Survey: https://www.ctps.org/dv/mbtasurvey2018/index.html#navButton
-2023 Passenger Survey: https://mbta massdot.opendata.arcgis.com/datasets/faaf1295847e4673a03b40cef2c53df1_0/explore
 Ridership Data: https://mbta-massdot.opendata.arcgis.com/search?q=ridership%20time%20period%20season
-Bus Ridership Breakdown: https://mbta-massdot.opendata.arcgis.com/datasets/eec03d901d2e470ebd5758c60d793e8e_0/explore
-Reliability data: https://mbta-massdot.opendata.arcgis.com/search?q=reliability
 Bus Arrival and Departure Times 2018-2024: https://mbta-massdot.opendata.arcgis.com/search?collection=dataset&q=mbta%20bus%20arrival%20departure%20time
-Census Median Household Income: https://data.census.gov/table/ACSST1Y2025.S1901?g=040XX00US25
-Census Race data: https://data.census.gov/table/DECENNIALCD1182020.P9?g=040XX00US25
 
 Project Timeline:
 - Week of October 11th: Start looking into data sources and collecting what is relevant and applicable. 
