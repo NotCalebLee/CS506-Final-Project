@@ -7,37 +7,75 @@ We are following the Spark! project "Boston Bus Equity." Boston's public transpo
 Main goal:
 - To measure how MBTA bus performance varies across the Boston area and identify residents most affected by gaps in service
 
-Specific goals: 
-- Measure the performance of buses by analyzing:
-  - Reliability of bus arrival and departure times (does the route hit the timepoint requirements outlined in the MBTA service delivery policy)
-  - Average delay and travel-time variation for trips
-- Measure performance of buses by geographical location
-  - Identify areas with consistently abnormal service (i.e. find routes where the difference in intended times and actual time is statistically significant)
-  - Test whether bus performance is tied with neighborhood characteristics such as median household income, ethnic background, etc.
-- Build a model to accurately predict delays on specific routes during specific days, times, and seasons
-- To quantify the impact that poor service quality has on riders (hours lost through total delays on a route or a similar metric)
+## Project status
 
-What data needs to be collected?
+| Goal | Status |
+|---|---|
+| Measure whether routes meet the timepoint requirements in the MBTA Service Delivery Policy | Done |
+| Measure average delay and travel-time variation | Done |
+| Find routes where actual times differ significantly from scheduled times | Done |
+| Measure performance by location, and test its link to neighborhood income and race | Done |
+| Estimate the time riders lose to poor service | Done, as a rough estimate |
+| Build a model to predict delays by route, day, time, and season | Not started |
 
-A lot of the data we will be using is accessible through the MBTA (accessible with ArcGIS). This data includes a system wide passenger survey, bus ridership data (broken up by routes, stops, and seasons), and reliability data shows with bus arrival and departure times. Data on people, specifically geographic information, will be taken from census surveys, and surveys within Massachusetts such as MassDOT. We will use GeoPandas to join the stop coordinates to census tracts. We will then merge the census data through those same tracts, which will allow us to look at routes in relation to the people who are most affected by any quality disparities. 
+## What's in this repo
 
-2015-2017 Passenger Survey: https://www.ctps.org/dv/mbtasurvey2018/index.html#navButton
-2023 Passenger Survey: https://mbta massdot.opendata.arcgis.com/datasets/faaf1295847e4673a03b40cef2c53df1_0/explore
-Ridership Data: https://mbta-massdot.opendata.arcgis.com/search?q=ridership%20time%20period%20season
-Bus Ridership Breakdown: https://mbta-massdot.opendata.arcgis.com/datasets/eec03d901d2e470ebd5758c60d793e8e_0/explore
-Reliability data: https://mbta-massdot.opendata.arcgis.com/search?q=reliability
-Bus Arrival and Departure Times 2018-2024: https://mbta-massdot.opendata.arcgis.com/search?collection=dataset&q=mbta%20bus%20arrival%20departure%20time
-Census Median Household Income: https://data.census.gov/table/ACSST1Y2025.S1901?g=040XX00US25
-Census Race data: https://data.census.gov/table/DECENNIALCD1182020.P9?g=040XX00US25
+| Location | Contents |
+|---|---|
+| `boston_bus_equity_checkin.ipynb` | Full analysis, from data download to final figures |
+| `Boston_Bus_Equity_CheckIn_Report.pdf` | Short October check-in report, without code |
+| `figures/` | The 10 figures used in the notebook and report |
+| `data/processed/` | Cleaned datasets and cleaning audit tables |
+| `final/data_processing.py` | Separate analysis of MBTA prediction accuracy |
 
-Project Timeline:
-- Week of October 11th: Start looking into data sources and collecting what is relevant and applicable. 
-- Week of October 18th: Begin cleaning data and finding trends tying metrics together.
-- Week of October 25th and November 1st: Work on data visualization of statistically significant relationships. (This is given two weeks as we accept the possibility that finding significant relationships can be challenging)
+To run the notebook, install `numpy`, `scipy`, `matplotlib`, and `openpyxl`, then run all cells from the repo's main folder. It also needs the `unzip` tool, which comes with Colab, Linux, and Git for Windows. Missing raw data is downloaded into `data/raw/`, about 1.6 GB, which is not stored in the repo. Delete `data/processed/` to rebuild the cleaned data from scratch.
+
+## Data we used
+
+| Data | Coverage used | Used for |
+|---|---|---|
+| [Bus Arrival Departure Times 2024](https://mbta-massdot.opendata.arcgis.com/datasets/96c77138c3144906bce93d0257531b6a/about) | Weekdays, Jan-Nov 2024 | On-time rate, delay, wait, and trip time |
+| [Bus Arrival Departure Times 2020](https://mbta-massdot.opendata.arcgis.com/datasets/4c1293151c6c4a069d49e6b85ee68ea4/about) | Weekdays, Jan-Feb 2020 | Pre-pandemic baseline |
+| [Bus Ridership by Trip, Season, Route, Line, and Stop](https://mbta-massdot.opendata.arcgis.com/datasets/8daf4a33925a4df59183f860826d29ee/about) | Weekdays, Fall 2016-2025 | Riders on each route |
+| [2025 System-Wide Passenger Survey](https://mbta-massdot.opendata.arcgis.com/datasets/2dac9c48bd3440c2bcf2a220614c667b_0/about) | Bus routes | Race and income of riders |
+| [2015-2017 Passenger Survey](https://www.ctps.org/dv/mbtasurvey2018/index.html) | Bus routes | Comparison with earlier riders |
+| [MBTA GTFS](https://www.mbta.com/developers/gtfs) | Stops file | Bus stop locations |
+| [ACS 5-year median household income, B19013](https://censusreporter.org/tables/B19013/) | 2020-2024, census tracts in Suffolk, Middlesex, Norfolk, Essex, and Plymouth counties | Neighborhood income |
+| [ACS 5-year race and ethnicity, B03002](https://censusreporter.org/tables/B03002/) | 2020-2024, same tracts | Neighborhood race |
+| [TIGERweb census tract boundaries](https://tigerweb.geo.census.gov/tigerwebmain/TIGERweb_main.html) | 2020 tracts, same counties | Matching stops to tracts |
+| [Rapid Transit and Bus Prediction Accuracy Data](https://mbta-massdot.opendata.arcgis.com/datasets/155ab68df00145cabddfb90377201b0e/about) | Bus and subway | Used by `final/data_processing.py` |
+
+## How we processed the data
+
+- **Time periods:** we compare Jan-Feb 2020 with Jan-Feb 2024 so that season does not affect the change. Other 2024 results use Jan-Nov, because the bus network changed in December 2024.
+- **Weekdays only:** weekend schedules differ.
+- **On time:** we apply the Service Delivery Policy tests. Scheduled service is judged against the timetable, and frequent service on the gaps between buses. Blank arrival times are left out of the main rate. Counting them as not on time lowers the 2024 rate from 66.3% to 61.4%.
+- **Neighborhoods:** we match bus stop coordinates to census tracts with a point-in-polygon check in `matplotlib`, then attach each tract's income and race.
+- **Riders:** we use survey results for route groups that list their routes, which cover 56% of boardings.
+
+## What we found
+
+"Yes" means the data back up the claim, but it does not prove what caused it.
+
+| # | What we expected | True? | What we found |
+|---|---|---|---|
+| H1 | Fewer people ride the bus than before the pandemic, and the drop differs by route | Yes | Weekday riders are at 79% of their Fall 2019 level, and the typical route lost 20%. |
+| H2 | Bus trips take longer and are less predictable than scheduled | Partly | A typical trip takes about as long as scheduled, but fast and slow trips on a route differ by about 16 minutes. |
+| H3 | Riders wait longer than the schedule suggests | Yes | On frequent routes, the wait is 8.6 minutes, not the 6.9 the schedule suggests. |
+| H4 | Some routes are much more reliable than others | Yes | Routes range from 40% to 80% on time. |
+| H5 | The 15 target routes perform worse than other routes | Partly | They are on time about as often, but run about 1.4 minutes later on average. |
+| H6 | Minority and low-income communities get worse service | Partly | On-time rates are about the same across neighborhoods, but buses run somewhat later in minority and lower-income areas. |
+| H7 | A small number of routes cause most of the lost time | Weakly | The 15 routes losing the most time account for 45% of lost hours, but they also carry 38% of riders. |
+| H8 | Buses were less reliable in 2024 than before the pandemic | Yes | From early 2020 to early 2024, the on-time rate fell from 73% to 69%, and average delay rose from 2.3 to 3.9 minutes. |
+
+## Remaining work
+
 - Week of November 8th: Finalize the primary data work and begin model training.
-- Week of November 15th and 22nd: Primarily work on model training and evaluation. Starting the basis of the final report is also a priority.
-- Week of November 29th: Work to make the project feel complete and thorough. Find any gaps or supplementary work that can further our goals, as well as finishing the final report. Additionally, as this is a Spark! project, we have the added responsibility of demo day at the end of the semester. We will prepare anything we feel in necessary for that side of our project.
+- Weeks of November 15th and 22nd: Primarily work on model training and evaluation, and start the final report.
+- Week of November 29th: Fill any remaining gaps, finish the final report, and prepare for the Spark! demo day at the end of the semester.
 
-Additional Sources:
-Service Delivery Policy: https://cdn.mbta.com/sites/default/files/2025-2-7-service-delivery-policy-fall-2024-final.pdf
-Economic Impacts of MBTA: https://www.abettercity.org/news-and-events/blog/the-transportation-dividend-transit-investments-and-the-massachusetts-economy
+## Additional sources
+
+- [Service Delivery Policy](https://cdn.mbta.com/sites/default/files/2025-2-7-service-delivery-policy-fall-2024-final.pdf)
+- [Livable Streets Better Buses Report](https://d3n8a8pro7vhmx.cloudfront.net/livablestreetsalliance/pages/6582/attachments/original/1569205099/lsa-better-buses-2019-v9-20sep19.pdf?1569205099) (source of the target routes)
+- [Economic Impacts of MBTA](https://www.abettercity.org/news-and-events/blog/the-transportation-dividend-transit-investments-and-the-massachusetts-economy)
