@@ -16,7 +16,7 @@ Main goal:
 | Find routes where actual times differ significantly from scheduled times | Done |
 | Measure performance by location, and test its link to neighborhood income and race | Done |
 | Estimate the time riders lose to poor service | Done, as a rough estimate |
-| Build a model to predict delays by route, day, time, and season | Not started |
+| Build a model to predict delays by route, day, and season | Done for route-day level; time of day still to add |
 
 ## What's in this repo
 
@@ -27,8 +27,10 @@ Main goal:
 | `figures/` | The 10 figures used in the notebook and report |
 | `data/processed/` | Cleaned datasets and cleaning audit tables |
 | `final/data_processing.py` | Separate analysis of MBTA prediction accuracy |
+| `boston_bus_equity_modeling.ipynb` | November check-in: delay prediction model, tuning, and results |
+| `Boston_Bus_Equity_November_CheckIn_Report.pdf` | Short November check-in report |
 
-To run the notebook, install `numpy`, `scipy`, `matplotlib`, and `openpyxl`, then run all cells from the repo's main folder. It also needs the `unzip` tool, which comes with Colab, Linux, and Git for Windows. Missing raw data is downloaded into `data/raw/`, about 1.6 GB, which is not stored in the repo. Delete `data/processed/` to rebuild the cleaned data from scratch.
+To run the notebook, install `numpy`, `scipy`, `matplotlib`, `openpyxl`, and `scikit-learn` (the modeling notebook needs it; it takes about 4 minutes to run), then run all cells from the repo's main folder. It also needs the `unzip` tool, which comes with Colab, Linux, and Git for Windows. Missing raw data is downloaded into `data/raw/`, about 1.6 GB, which is not stored in the repo. Delete `data/processed/` to rebuild the cleaned data from scratch.
 
 ## Data we used
 
@@ -67,6 +69,19 @@ To run the notebook, install `numpy`, `scipy`, `matplotlib`, and `openpyxl`, the
 | H6 | Minority and low-income communities get worse service | Partly | On-time rates are about the same across neighborhoods, but buses run somewhat later in minority and lower-income areas. |
 | H7 | A small number of routes cause most of the lost time | Weakly | The 15 routes losing the most time account for 45% of lost hours, but they also carry 38% of riders. |
 | H8 | Buses were less reliable in 2024 than before the pandemic | Yes | From early 2020 to early 2024, the on-time rate fell from 73% to 69%, and average delay rose from 2.3 to 3.9 minutes. |
+
+## Delay model (November check-in)
+
+We predict a route's mean delay on a weekday from information available the day before: the route's recent delay, route facts, and calendar. We compared ridge regression, kNN, a decision tree, a random forest, and gradient boosting against simple baselines, using rolling time-based cross-validation and a final Oct-Nov 2024 test.
+
+| Model | Test error (min) | R² |
+|---|---|---|
+| Gradient boosting | 1.29 | 0.58 |
+| Random forest | 1.34 | 0.55 |
+| Ridge regression | 1.38 | 0.52 |
+| Baseline: route's last 7 days | 1.52 | 0.41 |
+
+Fitted models beat the 7-day rule by only 0.1 to 0.2 minutes. Holidays are the largest misses. Time of day and weather are not yet in the model.
 
 ## Remaining work
 
